@@ -31,9 +31,27 @@
     <!--整合mybatis-->
     <bean id="sqlSessionFactoryBean" class="com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
-        <property name="configLocation" value="classpath:mybatis-config.xml"></property>
+        <!--        <property name="configLocation" value="classpath:mybatis-config.xml"></property>-->
         <!--<property name="mapperLocations" value="classpath:com/mashibing/dao/*.xml"></property>-->
+        <property name="configuration" ref="myconfiguration"></property>
+        <property name="globalConfig" ref="globalConfig"></property>
+        <property name="plugins">
+            <array>
+                <bean class="com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor"></bean>
+                <bean class="com.baomidou.mybatisplus.extension.plugins.OptimisticLockerInterceptor"></bean>
+            </array>
+        </property>
     </bean>
+
+    <bean id="myconfiguration" class="com.baomidou.mybatisplus.core.MybatisConfiguration">
+        <property name="logImpl" value="org.apache.ibatis.logging.log4j.Log4jImpl"></property>
+    </bean>
+
+    <bean id="globalConfig" class="com.baomidou.mybatisplus.core.config.GlobalConfig">
+        <property name="banner" value="false"></property>
+    </bean>
+
+
     <!--定义mybatis扫描器，扫描映射文件-->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage" value="com.dan.dao"></property>
